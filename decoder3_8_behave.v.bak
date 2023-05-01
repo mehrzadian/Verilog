@@ -1,0 +1,38 @@
+module decoder38_behave(en,a,b,c,o);
+input en,a,b,c;
+output reg [7:0]o;
+  
+always @(*)
+begin
+       
+       if(en==0) //works on low
+         begin
+		if({a,b,c}==3'b000) o=8'h1;
+           	else if({a,b,c}==3'b001) o=8'h2;
+           	else if({a,b,c}==3'b010) o=8'h4;
+           	else if({a,b,c}==3'b011) o=8'h8;
+		else if({a,b,c}==3'b100) o=8'h10;
+           	else if({a,b,c}==3'b101) o=8'h20;
+           	else if({a,b,c}==3'b110) o=8'h40;
+		else if({a,b,c}==3'b111) o=8'h80;
+           	
+           	else o=8'hx;
+           
+         end
+       else
+        o=8'h0;
+     end
+endmodule
+
+module tb_38decoderBehave;
+reg a,b,c,en;
+wire [7:0]o;
+decoder38_behave decoder(en,a,b,c,o);
+initial
+begin
+   
+      {en,a,b,c}=4'b0000;
+	repeat(100)
+	#10 {en,a,b,c} = {en,a,b,c}+1'b1;    
+end
+endmodule
